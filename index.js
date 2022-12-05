@@ -11,7 +11,7 @@ const replicate = new Replicate({token: process.env.REPLICATE_API_KEY});
 const openJourneyModel = await replicate.models.get("prompthero/openjourney");
 
 const corsOptions = {
-    origin: ['https://firenext-blog-ashy.vercel.app/', "http://localhost:3000/"],
+    origin: ['https://www.amir-benkoula.fr/', "http://localhost:3000/"],
     optionsSuccessStatus: 200
 }
 
@@ -25,12 +25,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors(corsOptions))
 
-app.post('/text-to-image', (req, res) => {
+app.post('/text-to-image', (req, res, next) => {
     openJourneyModel.predict({
-        prompt : "mdjrny-v4 style " + req.body.prompt
+        prompt : req.body.prompt
     }).then((output) => {
         res.send(output[0]);
-    });
+    }).catch(next);
 })
 
 app.listen(port, () => {
