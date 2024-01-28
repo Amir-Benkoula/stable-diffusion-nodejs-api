@@ -25,6 +25,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors(corsOptions))
 
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+    res.status(200).sendFile('index.html', { root: __dirname + '/public' });
+});
+
 app.post('/text-to-image', (req, res, next) => {
     openJourneyModel.predict({
         prompt : req.body.prompt
